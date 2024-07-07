@@ -5,7 +5,7 @@ import MoviesByYear from "./app/components/MoviesByYear";
 import { FlatList, StyleSheet, View } from "react-native";
 
 export default function App() {
-  const [data, setData] = useState(["2012", "2013", "2014", "2015"]);
+  const [data, setData] = useState(["2012"]);
 
   return (
     <>
