@@ -1,6 +1,6 @@
 import React from "react";
 import Constants from "expo-constants";
-import { Image, StyleSheet, View } from "react-native";
+import { FlatList, Image, StyleSheet, View } from "react-native";
 
 import HeaderButton from "./HeaderButton";
 
@@ -17,16 +17,36 @@ const genreList = [
     id: "3",
     name: "Horror",
   },
+  {
+    id: "4",
+    name: "Horror",
+  },
+  {
+    id: "5",
+    name: "Horror",
+  },
+  {
+    id: "6",
+    name: "Horror",
+  },
 ];
+
+const ItemSeperator = () => <View style={styles.seperator} />;
 
 const Header = () => {
   return (
     <View style={styles.headerContainer}>
       <Image source={require("../assets/logo.png")} />
       <View style={styles.tabsContainer}>
-        {genreList.map((genre) => (
-          <HeaderButton key={genre.id} title={genre.name} />
-        ))}
+        <FlatList
+          horizontal
+          data={genreList}
+          renderItem={({ item }) => (
+            <HeaderButton key={item.id} title={item.name} />
+          )}
+          ItemSeparatorComponent={ItemSeperator}
+          showsHorizontalScrollIndicator={false}
+        />
       </View>
     </View>
   );
@@ -39,9 +59,10 @@ const styles = StyleSheet.create({
     paddingTop: 20 + Constants.statusBarHeight,
   },
   tabsContainer: {
-    flexDirection: "row",
-    gap: 10,
     marginTop: 30,
+  },
+  seperator: {
+    width: 10,
   },
 });
 
