@@ -14,7 +14,6 @@ const MoviesByYear = ({ year }) => {
 
   const loadMovies = async () => {
     const response = await getMovies();
-    console.log(response.results);
     setMovies(response.results);
   };
 
