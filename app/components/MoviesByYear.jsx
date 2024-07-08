@@ -9,10 +9,10 @@ const MoviesByYear = ({ year }) => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    loadMovies();
+    loadMoviesByYear();
   }, []);
 
-  const loadMovies = async () => {
+  const loadMoviesByYear = async () => {
     const response = await getMovies();
     setMovies(response.results);
   };

@@ -13,10 +13,10 @@ const MovieCardModal = ({ item, showModal, setShowModal }) => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    loadMovies();
+    loadMovieDetails();
   }, []);
 
-  const loadMovies = async () => {
+  const loadMovieDetails = async () => {
     const response = await getMovieDetails(item.id);
     setData(response);
   };
