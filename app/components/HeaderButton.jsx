@@ -1,15 +1,38 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const HeaderButton = ({ title, color = "#484848" }) => {
+const HeaderButton = ({
+  data,
+  title,
+  genreFilterValue,
+  setGenreFilterValue,
+}) => {
+  const IS_ACTIVE = genreFilterValue.filter(
+    (genre) => genre.id === data.id
+  ).length;
+
+  const handleGenrePress = (data) => {
+    if (IS_ACTIVE) {
+      if (genreFilterValue.length > 1) {
+        const updatedGenreFilterValue = genreFilterValue.filter(
+          (genre) => genre.id !== data.id
+        );
+        setGenreFilterValue(updatedGenreFilterValue);
+      }
+    } else {
+      setGenreFilterValue([...genreFilterValue, data]);
+    }
+  };
+
   return (
     <TouchableOpacity
       style={[
         styles.btnContainer,
         {
-          backgroundColor: color,
+          backgroundColor: IS_ACTIVE ? "#f0283c" : "#484848",
         },
       ]}
+      onPress={() => handleGenrePress(data)}
     >
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>

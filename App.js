@@ -8,6 +8,7 @@ import { getGenres } from "./app/api/getGenres";
 export default function App() {
   const [data, setData] = useState(["2012"]);
   const [genreList, setGenreList] = useState([]);
+  const [genreFilterValue, setGenreFilterValue] = useState([]);
 
   useEffect(() => {
     loadGenres();
@@ -15,12 +16,23 @@ export default function App() {
 
   const loadGenres = async () => {
     const response = await getGenres();
-    setGenreList(response.genres);
+    const genreList = [{ id: 0, name: "All" }, ...response.genres];
+    setGenreList(genreList);
+    setGenreFilterValue([
+      {
+        id: 0,
+        name: "All",
+      },
+    ]);
   };
 
   return (
     <>
-      <Header genreList={genreList} />
+      <Header
+        genreList={genreList}
+        genreFilterValue={genreFilterValue}
+        setGenreFilterValue={setGenreFilterValue}
+      />
       <View style={styles.moviesContent}>
         <FlatList
           data={data}

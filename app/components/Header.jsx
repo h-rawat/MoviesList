@@ -6,8 +6,7 @@ import HeaderButton from "./HeaderButton";
 
 const ItemSeperator = () => <View style={styles.seperator} />;
 
-const Header = ({ genreList }) => {
-  console.log("🚀 ~ Header ~ genreList:", genreList);
+const Header = ({ genreList, genreFilterValue, setGenreFilterValue }) => {
   return (
     <View style={styles.headerContainer}>
       <Image source={require("../assets/logo.png")} />
@@ -16,7 +15,13 @@ const Header = ({ genreList }) => {
           horizontal
           data={genreList}
           renderItem={({ item }) => (
-            <HeaderButton key={item.id} title={item.name} />
+            <HeaderButton
+              key={item.id}
+              data={item}
+              title={item.name}
+              genreFilterValue={genreFilterValue}
+              setGenreFilterValue={setGenreFilterValue}
+            />
           )}
           ItemSeparatorComponent={ItemSeperator}
           showsHorizontalScrollIndicator={false}
