@@ -1,39 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Constants from "expo-constants";
 import { FlatList, Image, StyleSheet, View } from "react-native";
 
 import HeaderButton from "./HeaderButton";
-
-const genreList = [
-  {
-    id: "1",
-    name: "Action",
-  },
-  {
-    id: "2",
-    name: "Comedy",
-  },
-  {
-    id: "3",
-    name: "Horror",
-  },
-  {
-    id: "4",
-    name: "Horror",
-  },
-  {
-    id: "5",
-    name: "Horror",
-  },
-  {
-    id: "6",
-    name: "Horror",
-  },
-];
+import { getGenres } from "../api/getGenres";
 
 const ItemSeperator = () => <View style={styles.seperator} />;
 
 const Header = () => {
+  const [genreList, setGenreList] = useState([]);
+
+  useEffect(() => {
+    loadGenres();
+  });
+
+  const loadGenres = async () => {
+    const response = await getGenres();
+    setGenreList(response.genres);
+  };
+
   return (
     <View style={styles.headerContainer}>
       <Image source={require("../assets/logo.png")} />
