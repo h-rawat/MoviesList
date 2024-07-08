@@ -11,7 +11,7 @@ export default function App() {
 
   useEffect(() => {
     loadGenres();
-  });
+  }, []);
 
   const loadGenres = async () => {
     const response = await getGenres();
