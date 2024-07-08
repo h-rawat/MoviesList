@@ -16,7 +16,6 @@ const MovieCard = ({ item }) => {
     <>
       <TouchableHighlight
         onPress={() => {
-          console.log("pressed");
           setShowModal(true);
         }}
         style={styles.card}
