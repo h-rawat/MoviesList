@@ -27,11 +27,13 @@ const MovieCard = ({ item }) => {
           <Text style={styles.title}>{item.vote_average.toFixed(1)}</Text>
         </View>
       </TouchableHighlight>
-      <MovieCardModal
-        item={item}
-        showModal={showModal}
-        setShowModal={setShowModal}
-      />
+      {showModal && (
+        <MovieCardModal
+          item={item}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
+      )}
     </>
   );
 };
