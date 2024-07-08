@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Modal,
   StyleSheet,
@@ -7,23 +7,11 @@ import {
   View,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { getMovieDetails } from "../api/getMovieDetails";
 
-const MovieCardModal = ({ item, showModal, setShowModal }) => {
-  const [data, setData] = useState();
-
-  useEffect(() => {
-    loadMovieDetails();
-  }, []);
-
-  const loadMovieDetails = async () => {
-    const response = await getMovieDetails(item.id);
-    setData(response);
-  };
-
+const MovieCardModal = ({ item, movieDetails, showModal, setShowModal }) => {
   const getFiveCastMembers = () => {
     // get five cast members descending order of their popularity and belonging to the acting department
-    return data?.cast
+    return movieDetails?.cast
       ?.filter((item) => item.known_for_department === "Acting")
       .sort((a, b) => b.popularity - a.popularity)
       .slice(0, 5)
@@ -32,7 +20,7 @@ const MovieCardModal = ({ item, showModal, setShowModal }) => {
   };
 
   const getDirector = () => {
-    return data?.crew?.find((item) => item.job === "Director").name;
+    return movieDetails?.crew?.find((item) => item.job === "Director").name;
   };
 
   return (
@@ -55,7 +43,7 @@ const MovieCardModal = ({ item, showModal, setShowModal }) => {
             </TouchableHighlight>
           </View>
           {/* <Text style={styles.modalTextColor}>
-            Genres: {data?.genres?.map((genre) => genre.name).join(", ")}
+            Genres: {movieDetails?.genres?.map((genre) => genre.name).join(", ")}
           </Text> */}
           <Text style={[styles.modalTextColor, styles.overviewHeading]}>
             Cast:
@@ -68,6 +56,12 @@ const MovieCardModal = ({ item, showModal, setShowModal }) => {
           </Text>
           <Text style={[styles.modalTextColor, styles.textGray]}>
             {getDirector()}
+          </Text>
+          <Text style={[styles.modalTextColor, styles.overviewHeading]}>
+            Overview:
+          </Text>
+          <Text style={[styles.modalTextColor, styles.textGray]}>
+            {item.overview}
           </Text>
         </View>
       </View>
@@ -102,6 +96,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
+    width: "90%",
   },
   overviewHeading: {
     fontSize: 18,

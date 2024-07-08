@@ -1,6 +1,8 @@
 import { TOKEN } from "@env";
 
 export const getMovieDetails = async (id) => {
+  const url = `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`;
+
   const options = {
     method: "GET",
     headers: {
@@ -10,10 +12,7 @@ export const getMovieDetails = async (id) => {
   };
 
   try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`,
-      options
-    );
+    const response = await fetch(url, options);
     const data = await response.json();
     return data;
   } catch (error) {

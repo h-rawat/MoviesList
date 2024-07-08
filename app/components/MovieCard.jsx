@@ -1,3 +1,4 @@
+import Toast from "react-native-simple-toast";
 import { useState } from "react";
 import {
   Image,
@@ -6,17 +7,30 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
+
 import MovieCardModal from "./MovieCardModal";
+import { getMovieDetails } from "../api/getMovieDetails";
 
 const MovieCard = ({ item }) => {
   const imageUrl = `https://image.tmdb.org/t/p/original${item.poster_path}`;
+  const [movieDetails, setMovieDetails] = useState();
   const [showModal, setShowModal] = useState(false);
+
+  const loadMovieDetails = async () => {
+    const response = await getMovieDetails(item.id);
+    if (response?.status_code === 7) {
+      Toast.show(response?.status_message.split(":")[0]);
+    } else {
+      setMovieDetails(response);
+      setShowModal(true);
+    }
+  };
 
   return (
     <>
       <TouchableHighlight
         onPress={() => {
-          setShowModal(true);
+          loadMovieDetails(item.id);
         }}
         style={styles.card}
       >
@@ -30,6 +44,7 @@ const MovieCard = ({ item }) => {
       {showModal && (
         <MovieCardModal
           item={item}
+          movieDetails={movieDetails}
           showModal={showModal}
           setShowModal={setShowModal}
         />
