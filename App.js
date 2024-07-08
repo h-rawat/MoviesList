@@ -1,15 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Header from "./app/components/Header";
 import MoviesByYear from "./app/components/MoviesByYear";
 import { FlatList, StyleSheet, View } from "react-native";
+import { getGenres } from "./app/api/getGenres";
 
 export default function App() {
   const [data, setData] = useState(["2012"]);
+  const [genreList, setGenreList] = useState([]);
+
+  useEffect(() => {
+    loadGenres();
+  });
+
+  const loadGenres = async () => {
+    const response = await getGenres();
+    setGenreList(response.genres);
+  };
 
   return (
     <>
-      <Header />
+      <Header genreList={genreList} />
       <View style={styles.moviesContent}>
         <FlatList
           data={data}
