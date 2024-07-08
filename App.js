@@ -36,7 +36,9 @@ export default function App() {
       <View style={styles.moviesContent}>
         <FlatList
           data={data}
-          renderItem={({ item }) => <MoviesByYear year={item} />}
+          renderItem={({ item }) => (
+            <MoviesByYear year={item} genreFilterValue={genreFilterValue} />
+          )}
           keyExtractor={(item) => item.toString()}
         />
       </View>

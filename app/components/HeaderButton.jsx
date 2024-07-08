@@ -13,14 +13,31 @@ const HeaderButton = ({
 
   const handleGenrePress = (data) => {
     if (IS_ACTIVE) {
+      // if genre is selected
       if (genreFilterValue.length > 1) {
+        // if there are more than 1 genres selected
         const updatedGenreFilterValue = genreFilterValue.filter(
           (genre) => genre.id !== data.id
         );
         setGenreFilterValue(updatedGenreFilterValue);
       }
     } else {
-      setGenreFilterValue([...genreFilterValue, data]);
+      if (data.id === 0) {
+        // if user has selected "All", then remove selection of all other genres
+        setGenreFilterValue([
+          {
+            id: 0,
+            name: "All",
+          },
+        ]);
+      } else {
+        // user didnt select "All", so select the genre and unselect "All" if it was selected before
+        const newArr = [
+          ...genreFilterValue.filter((item) => item.id !== 0),
+          data,
+        ];
+        setGenreFilterValue(newArr);
+      }
     }
   };
 

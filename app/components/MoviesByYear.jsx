@@ -4,29 +4,41 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import MovieCard from "./MovieCard";
 import { getMovies } from "../api/getMovies";
 
-const MoviesByYear = ({ year }) => {
+const MoviesByYear = ({ year, genreFilterValue }) => {
   const [noOfColumns, setNoOfColumns] = useState(2);
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     loadMoviesByYear();
-  }, []);
+  }, [genreFilterValue]);
 
   const loadMoviesByYear = async () => {
     const response = await getMovies();
-    setMovies(response.results);
+    const selectedGenreIds = genreFilterValue.map((item) => item.id);
+    if (selectedGenreIds.length === 1 && selectedGenreIds[0] === 0) {
+      setMovies(response.results);
+    } else {
+      const hasMatchingGenre = response.results.filter((movie) =>
+        movie.genre_ids.some((genreId) => selectedGenreIds.includes(genreId))
+      );
+      setMovies(hasMatchingGenre);
+    }
   };
 
   return (
     <View style={styles.contentContainer}>
       <Text style={styles.year}>{year}</Text>
-      <FlatList
-        data={movies}
-        renderItem={({ item }) => <MovieCard item={item} key={item.id} />}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={noOfColumns}
-        contentContainerStyle={styles.cardContainer}
-      />
+      {movies.length === 0 ? (
+        <Text style={styles.noMovieText}>No movies available</Text>
+      ) : (
+        <FlatList
+          data={movies}
+          renderItem={({ item }) => <MovieCard item={item} key={item.id} />}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={noOfColumns}
+          contentContainerStyle={styles.cardContainer}
+        />
+      )}
     </View>
   );
 };
@@ -41,6 +53,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontSize: 24,
     marginBottom: 20,
+  },
+  noMovieText: {
+    color: "gray",
+    marginHorizontal: 10,
+    fontSize: 16,
+    marginHorizontal: "auto",
   },
 });
 
