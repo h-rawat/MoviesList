@@ -1,4 +1,4 @@
-import { TOKEN } from "@env";
+import { process } from "react-native";
 
 export const getMovieDetails = async (id) => {
   const url = `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`;
@@ -7,7 +7,7 @@ export const getMovieDetails = async (id) => {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${process.env.EXPO_API_TOKEN}`,
     },
   };
 
