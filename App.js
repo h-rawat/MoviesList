@@ -1,6 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Toast from "react-native-simple-toast";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import Header from "./app/components/Header";
 import MoviesByYear from "./app/components/MoviesByYear";
@@ -10,6 +16,7 @@ export default function App() {
   const [data, setData] = useState(["2012"]);
   const [genreList, setGenreList] = useState([]);
   const [genreFilterValue, setGenreFilterValue] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     loadGenres();
@@ -30,6 +37,38 @@ export default function App() {
           name: "All",
         },
       ]);
+    }
+  };
+
+  const loadMoreMovies = async (direction) => {
+    if (loading) return;
+    setLoading(true);
+
+    let newYear;
+    if (direction === "up") {
+      newYear = (parseInt(data[0]) - 1).toString();
+      setData([newYear, ...data]);
+    } else if (direction === "down") {
+      newYear = (parseInt(data[data.length - 1]) + 1).toString();
+      console.log("🚀 ~ loadMoreMovies ~ newYear:", newYear);
+      setData([...data, newYear]);
+    }
+
+    setLoading(false);
+  };
+
+  const handleScroll = (event) => {
+    const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+    const isCloseToTop = contentOffset.y <= 50;
+    const isCloseToBottom =
+      layoutMeasurement.height + contentOffset.y >= contentSize.height - 50;
+
+    if (isCloseToTop) {
+      loadMoreMovies("up");
+    }
+
+    if (isCloseToBottom) {
+      loadMoreMovies("down");
     }
   };
 
@@ -54,6 +93,13 @@ export default function App() {
               />
             )}
             keyExtractor={(item) => item.toString()}
+            onScroll={handleScroll}
+            scrollEventThrottle={16} // in ms
+            ListFooterComponent={
+              loading ? (
+                <ActivityIndicator size="large" color="#0000ff" />
+              ) : null
+            }
           />
         )}
       </View>
