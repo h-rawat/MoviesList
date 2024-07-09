@@ -1,6 +1,7 @@
 import Toast from "react-native-simple-toast";
 import { useState } from "react";
 import {
+  Dimensions,
   Image,
   StyleSheet,
   Text,
@@ -11,7 +12,7 @@ import {
 import MovieCardModal from "./MovieCardModal";
 import { getMovieDetails } from "../api/getMovieDetails";
 
-const MovieCard = ({ item, genreList }) => {
+const MovieCard = ({ item, genreList, noOfColumns }) => {
   const imageUrl = `https://image.tmdb.org/t/p/original${item.poster_path}`;
   const [movieDetails, setMovieDetails] = useState();
   const [showModal, setShowModal] = useState(false);
@@ -35,7 +36,12 @@ const MovieCard = ({ item, genreList }) => {
         onPress={() => {
           loadMovieDetails(item.id);
         }}
-        style={styles.card}
+        style={[
+          styles.card,
+          {
+            maxWidth: Dimensions.get("window").width / noOfColumns - 30,
+          },
+        ]}
       >
         <View>
           <Image source={imageUrl} />

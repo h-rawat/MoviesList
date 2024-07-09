@@ -41,7 +41,12 @@ const MoviesByYear = ({ year, genreFilterValue, genreList }) => {
         <FlatList
           data={movies}
           renderItem={({ item }) => (
-            <MovieCard item={item} key={item.id} genreList={genreList} />
+            <MovieCard
+              item={item}
+              key={item.id}
+              genreList={genreList}
+              noOfColumns={noOfColumns}
+            />
           )}
           keyExtractor={(item) => item.id.toString()}
           numColumns={noOfColumns}
