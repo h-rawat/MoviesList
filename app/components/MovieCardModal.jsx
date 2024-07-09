@@ -8,7 +8,16 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const MovieCardModal = ({ item, movieDetails, showModal, setShowModal }) => {
+const MovieCardModal = ({
+  item,
+  movieDetails,
+  showModal,
+  setShowModal,
+  genreList,
+}) => {
+  const GENRE_LIST = genreList.filter((genre) =>
+    item.genre_ids.includes(genre.id)
+  );
   const getFiveCastMembers = () => {
     // get five cast members descending order of their popularity and belonging to the acting department
     return movieDetails?.cast
@@ -42,9 +51,12 @@ const MovieCardModal = ({ item, movieDetails, showModal, setShowModal }) => {
               <MaterialCommunityIcons name="close" color="white" size={25} />
             </TouchableHighlight>
           </View>
-          {/* <Text style={styles.modalTextColor}>
-            Genres: {movieDetails?.genres?.map((genre) => genre.name).join(", ")}
-          </Text> */}
+          <Text style={[styles.modalTextColor, styles.overviewHeading]}>
+            Genres:
+          </Text>
+          <Text style={[styles.modalTextColor, styles.textGray]}>
+            {GENRE_LIST?.map((genre) => genre.name).join(", ")}{" "}
+          </Text>
           <Text style={[styles.modalTextColor, styles.overviewHeading]}>
             Cast:
           </Text>

@@ -5,7 +5,7 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import MovieCard from "./MovieCard";
 import { getMovies } from "../api/getMovies";
 
-const MoviesByYear = ({ year, genreFilterValue }) => {
+const MoviesByYear = ({ year, genreFilterValue, genreList }) => {
   const [noOfColumns, setNoOfColumns] = useState(2);
   const [movies, setMovies] = useState([]);
 
@@ -40,7 +40,9 @@ const MoviesByYear = ({ year, genreFilterValue }) => {
       ) : (
         <FlatList
           data={movies}
-          renderItem={({ item }) => <MovieCard item={item} key={item.id} />}
+          renderItem={({ item }) => (
+            <MovieCard item={item} key={item.id} genreList={genreList} />
+          )}
           keyExtractor={(item) => item.id.toString()}
           numColumns={noOfColumns}
           contentContainerStyle={styles.cardContainer}

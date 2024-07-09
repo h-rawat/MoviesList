@@ -44,7 +44,11 @@ export default function App() {
         <FlatList
           data={data}
           renderItem={({ item }) => (
-            <MoviesByYear year={item} genreFilterValue={genreFilterValue} />
+            <MoviesByYear
+              year={item}
+              genreFilterValue={genreFilterValue}
+              genreList={genreList}
+            />
           )}
           keyExtractor={(item) => item.toString()}
         />
