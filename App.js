@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Toast from "react-native-simple-toast";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
 import Header from "./app/components/Header";
 import MoviesByYear from "./app/components/MoviesByYear";
-import { FlatList, StyleSheet, View } from "react-native";
 import { getGenres } from "./app/api/getGenres";
 
 export default function App() {
@@ -41,17 +41,21 @@ export default function App() {
         setGenreFilterValue={setGenreFilterValue}
       />
       <View style={styles.moviesContent}>
-        <FlatList
-          data={data}
-          renderItem={({ item }) => (
-            <MoviesByYear
-              year={item}
-              genreFilterValue={genreFilterValue}
-              genreList={genreList}
-            />
-          )}
-          keyExtractor={(item) => item.toString()}
-        />
+        {genreList.length === 0 ? (
+          <Text style={styles.noDataText}>No Data Available</Text>
+        ) : (
+          <FlatList
+            data={data}
+            renderItem={({ item }) => (
+              <MoviesByYear
+                year={item}
+                genreFilterValue={genreFilterValue}
+                genreList={genreList}
+              />
+            )}
+            keyExtractor={(item) => item.toString()}
+          />
+        )}
       </View>
     </>
   );
@@ -61,5 +65,11 @@ const styles = StyleSheet.create({
   moviesContent: {
     backgroundColor: "#121212",
     flex: 1,
+  },
+  noDataText: {
+    color: "#fff",
+    marginTop: 20,
+    marginHorizontal: "auto",
+    fontSize: 20,
   },
 });
