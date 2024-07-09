@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Toast from "react-native-simple-toast";
 
 import Header from "./app/components/Header";
 import MoviesByYear from "./app/components/MoviesByYear";
@@ -16,14 +17,20 @@ export default function App() {
 
   const loadGenres = async () => {
     const response = await getGenres();
-    const genreList = [{ id: 0, name: "All" }, ...response.genres];
-    setGenreList(genreList);
-    setGenreFilterValue([
-      {
-        id: 0,
-        name: "All",
-      },
-    ]);
+    if (response?.status_code === 7) {
+      Toast.show(
+        response?.status_message.split(":")[0] + " : Unable to get genres"
+      );
+    } else {
+      const genreList = [{ id: 0, name: "All" }, ...response.genres];
+      setGenreList(genreList);
+      setGenreFilterValue([
+        {
+          id: 0,
+          name: "All",
+        },
+      ]);
+    }
   };
 
   return (

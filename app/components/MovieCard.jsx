@@ -19,7 +19,10 @@ const MovieCard = ({ item }) => {
   const loadMovieDetails = async () => {
     const response = await getMovieDetails(item.id);
     if (response?.status_code === 7) {
-      Toast.show(response?.status_message.split(":")[0]);
+      Toast.show(
+        response?.status_message.split(":")[0] +
+          " : Unable to get movie details"
+      );
     } else {
       setMovieDetails(response);
       setShowModal(true);

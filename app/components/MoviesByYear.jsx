@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Toast from "react-native-simple-toast";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 import MovieCard from "./MovieCard";
@@ -14,14 +15,20 @@ const MoviesByYear = ({ year, genreFilterValue }) => {
 
   const loadMoviesByYear = async () => {
     const response = await getMovies();
-    const selectedGenreIds = genreFilterValue.map((item) => item.id);
-    if (selectedGenreIds.length === 1 && selectedGenreIds[0] === 0) {
-      setMovies(response.results);
-    } else {
-      const hasMatchingGenre = response.results.filter((movie) =>
-        movie.genre_ids.some((genreId) => selectedGenreIds.includes(genreId))
+    if (response?.status_code === 7) {
+      Toast.show(
+        response?.status_message.split(":")[0] + " : Unable to get movies"
       );
-      setMovies(hasMatchingGenre);
+    } else {
+      const selectedGenreIds = genreFilterValue.map((item) => item.id);
+      if (selectedGenreIds.length === 1 && selectedGenreIds[0] === 0) {
+        setMovies(response.results);
+      } else {
+        const hasMatchingGenre = response.results.filter((movie) =>
+          movie.genre_ids.some((genreId) => selectedGenreIds.includes(genreId))
+        );
+        setMovies(hasMatchingGenre);
+      }
     }
   };
 
