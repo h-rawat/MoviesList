@@ -7,6 +7,7 @@ import { getMovies } from "../api/getMovies";
 
 const MoviesByYear = React.memo(({ year, genreFilterValue, genreList }) => {
   const [noOfColumns, setNoOfColumns] = useState(2);
+  const [originalMovies, setOriginalMovies] = useState([]);
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -19,10 +20,10 @@ const MoviesByYear = React.memo(({ year, genreFilterValue, genreList }) => {
 
   const filterMoviesOnGenre = () => {
     const selectedGenreIds = genreFilterValue.map((item) => item.id);
-    if (selectedGenreIds.length === 1 && selectedGenreIds[0] === 0) {
+    if (selectedGenreIds?.length === 1 && selectedGenreIds[0] === 0) {
       loadMoviesByYear();
     } else {
-      const hasMatchingGenre = movies.filter((movie) =>
+      const hasMatchingGenre = originalMovies.filter((movie) =>
         movie.genre_ids.some((genreId) => selectedGenreIds.includes(genreId))
       );
       setMovies(hasMatchingGenre);
@@ -36,6 +37,7 @@ const MoviesByYear = React.memo(({ year, genreFilterValue, genreList }) => {
         response?.status_message.split(":")[0] + " : Unable to get movies"
       );
     } else {
+      setOriginalMovies(response.results);
       setMovies(response.results);
     }
   };
@@ -43,7 +45,7 @@ const MoviesByYear = React.memo(({ year, genreFilterValue, genreList }) => {
   return (
     <View style={styles.contentContainer}>
       <Text style={styles.year}>{year}</Text>
-      {movies.length === 0 ? (
+      {movies?.length === 0 ? (
         <Text style={styles.noMovieText}>No movies available</Text>
       ) : (
         <FlatList
