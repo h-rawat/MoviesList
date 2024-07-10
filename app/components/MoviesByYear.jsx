@@ -10,8 +10,24 @@ const MoviesByYear = React.memo(({ year, genreFilterValue, genreList }) => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    loadMoviesByYear();
+    filterMoviesOnGenre();
   }, [genreFilterValue]);
+
+  useEffect(() => {
+    loadMoviesByYear();
+  }, []);
+
+  const filterMoviesOnGenre = () => {
+    const selectedGenreIds = genreFilterValue.map((item) => item.id);
+    if (selectedGenreIds.length === 1 && selectedGenreIds[0] === 0) {
+      loadMoviesByYear();
+    } else {
+      const hasMatchingGenre = movies.filter((movie) =>
+        movie.genre_ids.some((genreId) => selectedGenreIds.includes(genreId))
+      );
+      setMovies(hasMatchingGenre);
+    }
+  };
 
   const loadMoviesByYear = async () => {
     const response = await getMovies(year);
@@ -20,15 +36,7 @@ const MoviesByYear = React.memo(({ year, genreFilterValue, genreList }) => {
         response?.status_message.split(":")[0] + " : Unable to get movies"
       );
     } else {
-      const selectedGenreIds = genreFilterValue.map((item) => item.id);
-      if (selectedGenreIds.length === 1 && selectedGenreIds[0] === 0) {
-        setMovies(response.results);
-      } else {
-        const hasMatchingGenre = response.results.filter((movie) =>
-          movie.genre_ids.some((genreId) => selectedGenreIds.includes(genreId))
-        );
-        setMovies(hasMatchingGenre);
-      }
+      setMovies(response.results);
     }
   };
 
