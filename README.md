@@ -44,6 +44,8 @@ Open the .env.example file for reference on how to setup the .env file, this is 
 
 ```bash
 npm start
+# or
+yarn start
 ```
 
 ### 6. Running on an Android Emulator
