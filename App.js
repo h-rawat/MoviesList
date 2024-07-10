@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import Toast from "react-native-simple-toast";
 import {
   ActivityIndicator,
@@ -50,7 +50,6 @@ export default function App() {
       setData([newYear, ...data]);
     } else if (direction === "down") {
       newYear = (parseInt(data[data.length - 1]) + 1).toString();
-      console.log("🚀 ~ loadMoreMovies ~ newYear:", newYear);
       setData([...data, newYear]);
     }
 
@@ -72,6 +71,19 @@ export default function App() {
     }
   };
 
+  const renderItem = useCallback(
+    ({ item }) => (
+      <MoviesByYear
+        year={item}
+        genreFilterValue={genreFilterValue}
+        genreList={genreList}
+      />
+    ),
+    [genreFilterValue, genreList]
+  );
+
+  const keyExtractor = useCallback((item) => item.toString(), []);
+
   return (
     <>
       <Header
@@ -85,14 +97,8 @@ export default function App() {
         ) : (
           <FlatList
             data={data}
-            renderItem={({ item }) => (
-              <MoviesByYear
-                year={item}
-                genreFilterValue={genreFilterValue}
-                genreList={genreList}
-              />
-            )}
-            keyExtractor={(item) => item.toString()}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
             onScroll={handleScroll}
             scrollEventThrottle={16} // in ms
             ListFooterComponent={

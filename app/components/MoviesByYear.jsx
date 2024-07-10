@@ -5,7 +5,7 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import MovieCard from "./MovieCard";
 import { getMovies } from "../api/getMovies";
 
-const MoviesByYear = ({ year, genreFilterValue, genreList }) => {
+const MoviesByYear = React.memo(({ year, genreFilterValue, genreList }) => {
   const [noOfColumns, setNoOfColumns] = useState(2);
   const [movies, setMovies] = useState([]);
 
@@ -14,7 +14,7 @@ const MoviesByYear = ({ year, genreFilterValue, genreList }) => {
   }, [genreFilterValue]);
 
   const loadMoviesByYear = async () => {
-    const response = await getMovies();
+    const response = await getMovies(year);
     if (response?.status_code === 7) {
       Toast.show(
         response?.status_message.split(":")[0] + " : Unable to get movies"
@@ -55,7 +55,7 @@ const MoviesByYear = ({ year, genreFilterValue, genreList }) => {
       )}
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   contentContainer: {
