@@ -67,11 +67,11 @@ expo start -c
 
 - Implemented this project in React Native instead of a web app
 - Displayed a list of movies in descending order of popularity
-- Show the movie title, image and rating on the card
-- Show the genre, cast, director and short description related to movie in a modal which opens up when user clicks on the card
-- Load a total of 20 movies for each year
-- By default, when a user lands on the page, display a list of movies of the year 2012
-- load movies of previous year when user scrolls up and load movies of next year when user scrolls down until the current year (little bug where previous year movies don't load when user tries to scroll down on first render)
+- Displayed the movie title, image and rating on the card
+- Displayed the genre, cast, director and short description related to movie in a modal which opens up when user clicks on the card
+- Loading a total of 20 movies for each year
+- By default, when a user lands on the page, displayed a list of movies of the year 2012
+- Loading movies of previous year when user scrolls up and load movies of next year when user scrolls down until the current year (little bug where previous year movies don't load when user tries to scroll down on first render)
 - provided a genre filter at the top
   - when user selects "All", all other genres(if selected) are deselected since user wants to see movies of all genres
   - when user selects any genre other than "All", then "All" is deselected(if it was selected already) since user wants to see movies of a particular genre
