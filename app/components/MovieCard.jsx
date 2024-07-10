@@ -2,7 +2,7 @@ import Toast from "react-native-simple-toast";
 import { useState } from "react";
 import {
   Dimensions,
-  Image,
+  ImageBackground,
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -44,10 +44,17 @@ const MovieCard = ({ item, genreList, noOfColumns }) => {
         ]}
       >
         <View>
-          <Image source={imageUrl} />
-          <Text style={styles.title}>{imageUrl}</Text>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.title}>{item.vote_average.toFixed(1)}</Text>
+          <ImageBackground
+            source={{
+              uri: imageUrl,
+            }}
+            style={styles.imageBackground}
+          >
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.title}>{item.vote_average.toFixed(1)}</Text>
+            </View>
+          </ImageBackground>
         </View>
       </TouchableHighlight>
       {showModal && (
@@ -64,14 +71,25 @@ const MovieCard = ({ item, genreList, noOfColumns }) => {
 };
 
 const styles = StyleSheet.create({
+  imageBackground: {
+    width: "auto",
+    height: 250,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  textContainer: {
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    justifyContent: "flex-end",
+    marginTop: "auto",
+    width: "100%",
+    padding: 5,
+  },
   card: {
     height: 250,
     backgroundColor: "#424242",
     flex: 1,
     margin: 10,
     marginTop: 0,
-    justifyContent: "flex-end",
-    padding: 5,
   },
   title: {
     color: "#fff",
